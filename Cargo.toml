@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-codes-iso-3166 = { version = "*" }
+codes-iso-3166 = { version = "*", default-features = false }
 ureq = { version = "*" }
-
+icalendar = { version = "*", features= ["parser"] }
