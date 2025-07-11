@@ -2,6 +2,8 @@ use codes_iso_3166::part_1::CountryCode;
 use std::str::FromStr;
 use std::fmt;
 
+use crate::google_public_calendar::GooglePublicCalendar;
+
 /* TODO
  * load calendar from disk, or from the binary with include_dir
  * add a Calendar type that generate a url, download the calendar
@@ -15,6 +17,12 @@ pub struct CountryCalendar {
     google_cal_id: String,
 }
 
+impl GooglePublicCalendar for CountryCalendar {
+    fn get_google_id(&self) -> String {
+        self.google_cal_id.clone()
+    }
+}
+
 impl CountryCalendar {
     fn new(code: CountryCode) -> Self {
         Self {
@@ -23,6 +31,7 @@ impl CountryCalendar {
             google_cal_id: "".to_owned(),
         }
     }
+
 }
 
 impl fmt::Display for CountryCalendar {

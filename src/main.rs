@@ -25,12 +25,14 @@ fn load_toml_file(file: &str) -> toml::Table {
 */
 
 mod country_calendar;
+mod google_public_calendar;
 use crate::country_calendar::CountryCalendar;
+use crate::google_public_calendar::GooglePublicCalendar;
 
 fn main() {
     let fr = CountryCalendar::try_from("fr").unwrap();
     let de = CountryCalendar::try_from("de").unwrap();
-    println!("{}", de);
+    println!("{}", de.construct_calendar_url());
   //  let mut merge_calendar = MergedCalendar::new();
   //  merge_calendar.add(fr);
   //  merge_calendar.add(de);
