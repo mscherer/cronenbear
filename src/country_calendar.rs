@@ -14,12 +14,36 @@ use crate::google_public_calendar::GooglePublicCalendar;
 #[derive(Debug)]
 pub struct CountryCalendar {
     iso_3166_code: CountryCode,
-    google_cal_id: String,
+    //    google_cal_id: String,
 }
 
 impl GooglePublicCalendar for CountryCalendar {
     fn get_google_id(&self) -> String {
-        self.google_cal_id.clone()
+        let r = match self.iso_3166_code {
+            CountryCode::AU => "australian",
+            CountryCode::BE => "be",
+            CountryCode::BR => "brazilian",
+            CountryCode::CA => "canadian",
+            CountryCode::CN => "china",
+            CountryCode::CZ => "czech",
+            CountryCode::DE => "german",
+            CountryCode::FI => "finnish",
+            CountryCode::FR => "french",
+            CountryCode::GB => "uk",
+            CountryCode::HR => "croatian",
+            CountryCode::IE => "irish",
+            // as surprising it may seems, that's what Google calendar use
+            CountryCode::IL => "jewish",
+            // not sure why this is different
+            CountryCode::IN => "indian.official",
+            CountryCode::IT => "italian",
+            CountryCode::JP => "japanese",
+            CountryCode::NL => "dutch",
+            CountryCode::SK => "slovak",
+            CountryCode::US => "usa",
+            _ => "",
+        };
+        r.to_string()
     }
 }
 
@@ -27,15 +51,13 @@ impl CountryCalendar {
     fn new(code: CountryCode) -> Self {
         Self {
             iso_3166_code: code,
-            // TODO load from the disk
-            google_cal_id: "".to_owned(),
         }
     }
 }
 
 impl fmt::Display for CountryCalendar {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}: {}", self.iso_3166_code, self.google_cal_id)
+        write!(f, "{}: {}", self.iso_3166_code, self.get_google_id())
     }
 }
 
