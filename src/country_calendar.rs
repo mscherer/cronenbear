@@ -2,7 +2,8 @@ use codes_iso_3166::part_1::CountryCode;
 use std::fmt;
 use std::str::FromStr;
 
-use crate::google_public_calendar::GooglePublicCalendar;
+use crate::google_public_calendar::{GooglePublicCalendar, GooglePublicCalendarError};
+use icalendar::Calendar;
 
 /* TODO
  * load calendar from disk, or from the binary with include_dir
@@ -70,6 +71,13 @@ impl TryFrom<&str> for CountryCalendar {
         } else {
             Err(())
         }
+    }
+}
+
+impl TryFrom<CountryCalendar> for Calendar {
+    type Error = GooglePublicCalendarError;
+    fn try_from(c: CountryCalendar) -> Result<Self, Self::Error> {
+        c.to_ical()
     }
 }
 
