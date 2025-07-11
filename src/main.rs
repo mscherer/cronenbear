@@ -11,7 +11,6 @@ use std::fs;
 //
 //fn construct_calendar_url(
 
-
 /*fn construct_calendar_url(id: HolidaysID) -> CalendarURL {
     let name = format!("{:?}.{:?}#holiday@group.v.calendar.google.com", LANGUAGE, id);
     CalendarURL(format!("{:?}{:?}{:?}", CALENDAR_PREFIX, name, CALENDAR_SUFFIX))
@@ -33,12 +32,10 @@ fn main() {
     let fr = CountryCalendar::try_from("fr").unwrap();
     let de = CountryCalendar::try_from("de").unwrap();
     println!("{}", de.construct_calendar_url());
-  //  let mut merge_calendar = MergedCalendar::new();
-  //  merge_calendar.add(fr);
-  //  merge_calendar.add(de);
+    //  let mut merge_calendar = MergedCalendar::new();
+    //  merge_calendar.add(fr);
+    //  merge_calendar.add(de);
     //println!("{}", merge_calendar.generate_ical());
 
-  //  load_all_calendars();
-
-
+    //  load_all_calendars();
 }

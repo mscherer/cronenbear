@@ -1,6 +1,6 @@
 use codes_iso_3166::part_1::CountryCode;
-use std::str::FromStr;
 use std::fmt;
+use std::str::FromStr;
 
 use crate::google_public_calendar::GooglePublicCalendar;
 
@@ -31,7 +31,6 @@ impl CountryCalendar {
             google_cal_id: "".to_owned(),
         }
     }
-
 }
 
 impl fmt::Display for CountryCalendar {
@@ -70,6 +69,5 @@ mod test {
         // I hope no country will be created with that code
         let zz = CountryCalendar::try_from("ZZ");
         assert_eq!(zz.is_err(), true);
-
     }
 }

@@ -3,7 +3,7 @@ const GCAL_SUFFIX: &str = "/public/basic.ics";
 const LANGUAGE: &str = "en";
 
 pub trait GooglePublicCalendar {
-    fn get_google_id(&self) -> String ;
+    fn get_google_id(&self) -> String;
 
     fn construct_calendar_url(&self) -> String {
         let id = self.get_google_id();
