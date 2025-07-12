@@ -3,7 +3,7 @@ extern crate serde_derive;
 extern crate toml;
 use serde_derive::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Aliases {
     aliases: HashMap<String,Vec<String>>,
 
