@@ -20,6 +20,10 @@ impl Aliases {
         aliases
     }
 
+    pub fn get_all_aliases(&self) -> Vec<String> {
+        self.aliases.clone().into_keys().collect()
+    }
+
     /* pub fn generate_hardcoded() -> Self {
         // TODO use a hardcoded toml file
         let hash = HashMap::from([("ospo".to_owned(), vec!["fr".to_owned(), 
