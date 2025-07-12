@@ -1,9 +1,13 @@
 [package]
 name = "cronenbear"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 codes-iso-3166 = { version = "*", default-features = false }
 ureq = { version = "*" }
 icalendar = { version = "*", features= ["parser"] }
+toml = { version = "*" }
+serde_derive = "1"
+serde = { version = "1", features = ["derive"] }
+
