@@ -21,11 +21,14 @@ pub struct AppState {
 }
 
 pub async fn ical_handler(
-    State(sate): State<AppState>,
+    State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
-    // TODO parser le chemin et voir si il y a un .ics à la fin
-    "ok"
+    if id.ends_with(".ics") {
+        // TODO give the calendar
+        return "ok";
+    }
+    "not ok"
 }
 
 pub async fn health_checker_handler() -> impl IntoResponse {
