@@ -1,23 +1,23 @@
+use askama::Template;
 use axum::Router;
 use axum::extract::Path;
 use axum::extract::State;
-use axum::response::IntoResponse;
-use axum::response::Html;
 use axum::http::StatusCode;
-use askama::Template;
+use axum::response::Html;
+use axum::response::IntoResponse;
 use axum::routing::get;
 use cronenbear::aliases::Aliases;
 use cronenbear::country_calendar::CountryCalendar;
 use cronenbear::google_public_calendar::GooglePublicCalendar;
+use cronenbear::index_page::IndexTemplate;
 use cronenbear::merged_calendar::MergedCalendar;
 use cronenbear::religion_calendar::{ReligionCalendar, ReligionCode};
-use cronenbear::index_page::IndexTemplate;
 
 use std::env;
 
 #[derive(Clone, Debug)]
 pub struct AppState {
-    aliases: Aliases
+    aliases: Aliases,
 }
 
 pub async fn ical_handler(
@@ -47,9 +47,7 @@ const PORT: u16 = 1107;
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     let aliases = Aliases::load_hardcoded();
-    let app_state = AppState {
-        aliases: aliases
-    };
+    let app_state = AppState { aliases: aliases };
 
     // TODO
     // faire un calendrier par item dans un alias

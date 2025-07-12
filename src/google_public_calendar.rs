@@ -57,6 +57,9 @@ mod test {
     #[test]
     fn test_calendar_url() {
         let fr = CountryCalendar::try_from("fr").expect("weird error");
-        assert_eq!(fr.construct_calendar_url(), "https://calendar.google.com/calendar/ical/en.french%23holiday@group.v.calendar.google.com/public/basic.ics");
+        assert_eq!(
+            fr.construct_calendar_url(),
+            "https://calendar.google.com/calendar/ical/en.french%23holiday@group.v.calendar.google.com/public/basic.ics"
+        );
     }
 }
