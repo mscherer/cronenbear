@@ -2,6 +2,7 @@ use std::collections::HashMap;
 extern crate serde_derive;
 extern crate toml;
 use serde_derive::Deserialize;
+use array_tool::vec::Uniq;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Aliases {
@@ -22,6 +23,10 @@ impl Aliases {
 
     pub fn get_all_aliases(&self) -> Vec<String> {
         self.aliases.clone().into_keys().collect()
+    }
+
+    pub fn get_all_calendars_to_create(&self) -> Vec<String> {
+        self.aliases.clone().into_values().flatten().collect::<Vec<_>>().unique()
     }
 
     /* pub fn generate_hardcoded() -> Self {

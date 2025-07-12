@@ -14,4 +14,5 @@ axum = { version = "0.8", features = ['macros']}
 axum-macros = "0.5"
 tokio = { version = "1" }
 askama = "0.14.0"
+array_tool = "1.0.3"
 
