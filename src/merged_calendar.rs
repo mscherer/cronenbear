@@ -3,6 +3,7 @@ use icalendar::Calendar;
 use icalendar::CalendarComponent::Event;
 use icalendar::Component;
 
+#[derive(Debug)]
 pub struct MergedCalendar {
     calendars: Vec<Calendar>,
     name: String,
