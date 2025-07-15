@@ -34,25 +34,31 @@ impl MergedCalendar {
     pub fn get_name(&self) -> String {
         self.name.to_string().clone()
     }
-}
 
-impl From<MergedCalendar> for icalendar::Calendar {
-    fn from(merged_calendar: MergedCalendar) -> icalendar::Calendar {
+    pub fn generate_ical(&self) -> icalendar::Calendar {
         let mut new_cal = Calendar::new(); //.name("example calendar")
-        let name = merged_calendar.get_name();
-        for calendar in merged_calendar {
-            for e in calendar.components {
+        let name = self.get_name();
+        for calendar in &self.calendars {
+            for e in &calendar.components {
                 if let Event(event) = e {
                     // TODO make sure this work if language is set to something else than english
                     if event
                         .get_description()
                         .is_none_or(|v| !v.contains("Observance"))
                     {
-                        new_cal.push(event.clone());
+                        let e = event.clone();
+                        // TODO add a text to say which country is on holiday
+                        new_cal.push(e);
                     }
                 }
             }
         }
         new_cal.name(&name).done()
+    }
+}
+
+impl From<MergedCalendar> for icalendar::Calendar {
+    fn from(merged_calendar: MergedCalendar) -> icalendar::Calendar {
+        merged_calendar.generate_ical()
     }
 }
