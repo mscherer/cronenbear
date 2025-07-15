@@ -53,7 +53,7 @@ pub trait GooglePublicCalendar {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::CountryCalendar;
+    use crate::country_calendar::CountryCalendar;
     #[test]
     fn test_calendar_url() {
         let fr = CountryCalendar::try_from("fr").expect("weird error");

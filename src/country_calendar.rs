@@ -90,8 +90,8 @@ mod test {
         let fr = CountryCalendar::try_from("fr");
         assert_eq!(fr.is_err(), false);
 
-        let FR = CountryCalendar::try_from("FR");
-        assert_eq!(FR.is_err(), false);
+        let fr_capital = CountryCalendar::try_from("FR");
+        assert_eq!(fr_capital.is_err(), false);
 
         let plop = CountryCalendar::try_from("plop");
         assert_eq!(plop.is_err(), true);
