@@ -10,11 +10,8 @@ use axum::response::IntoResponse;
 use axum::routing::get;
 use cronenbear::aliases::Aliases;
 use cronenbear::country_calendar::CountryCalendar;
-use cronenbear::google_public_calendar::GooglePublicCalendar;
 use cronenbear::index_page::IndexTemplate;
 use cronenbear::merged_calendar::MergedCalendar;
-use cronenbear::religion_calendar::{ReligionCalendar, ReligionCode};
-use icalendar::Calendar;
 use std::collections::HashMap;
 use std::sync::Arc;
 
