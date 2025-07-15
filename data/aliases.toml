@@ -1,2 +1,3 @@
 [aliases]
 ospo = ["fr", "jp", "us", "cz", "de", "fi", "ie", "us"]
+comminfra = ["fr", "jp", "us"]
