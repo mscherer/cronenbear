@@ -33,6 +33,10 @@ impl Aliases {
             .unique()
     }
 
+    // TODO check arguments
+    pub fn get_members(&self, alias: &String) -> Option<Vec<String>> {
+        self.aliases.get(alias).cloned()
+    }
     /* pub fn generate_hardcoded() -> Self {
         // TODO use a hardcoded toml file
         let hash = HashMap::from([("ospo".to_owned(), vec!["fr".to_owned(),
