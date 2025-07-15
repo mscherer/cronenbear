@@ -32,8 +32,8 @@ pub trait GooglePublicCalendar {
     fn construct_calendar_url(&self) -> String {
         let id = self.get_google_id();
         // cannot use # directly, convert to %23
-        let name = format!("{}.{}%23holiday@group.v.calendar.google.com", LANGUAGE, id);
-        format!("{}{}{}", GCAL_PREFIX, name, GCAL_SUFFIX)
+        let name = format!("{LANGUAGE}.{id}%23holiday@group.v.calendar.google.com");
+        format!("{GCAL_PREFIX}{name}{GCAL_SUFFIX}")
     }
 
     fn fetch_calendar_web(&self) -> Result<String, GooglePublicCalendarError> {
