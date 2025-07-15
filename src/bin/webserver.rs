@@ -3,6 +3,8 @@ use axum::Router;
 use axum::extract::Path;
 use axum::extract::State;
 use axum::http::StatusCode;
+use axum::http::header;
+
 use axum::response::Html;
 use axum::response::IntoResponse;
 use axum::routing::get;
@@ -12,23 +14,30 @@ use cronenbear::google_public_calendar::GooglePublicCalendar;
 use cronenbear::index_page::IndexTemplate;
 use cronenbear::merged_calendar::MergedCalendar;
 use cronenbear::religion_calendar::{ReligionCalendar, ReligionCode};
+use icalendar::Calendar;
+use std::collections::HashMap;
+use std::sync::Arc;
 
 use std::env;
 
 #[derive(Clone, Debug)]
 pub struct AppState {
     aliases: Aliases,
+    all_merged_calendars: Arc<HashMap<String, MergedCalendar>>,
 }
 
 pub async fn ical_handler(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
-    if id.ends_with(".ics") {
-        // TODO give the calendar
-        return "ok";
+    if let Some(calendar_name) = id.strip_suffix(".ics") {
+        if let Some(merged) = state.all_merged_calendars.get(calendar_name) {
+            let mut headers = header::HeaderMap::new();
+            headers.insert(header::CONTENT_TYPE, "text/calendar".parse().unwrap());
+            return (headers, merged.generate_ical().to_string()).into_response();
+        }
     }
-    "not ok"
+    (StatusCode::NOT_FOUND, "Not Found").into_response()
 }
 
 pub async fn health_checker_handler() -> impl IntoResponse {
@@ -50,13 +59,26 @@ const PORT: u16 = 1107;
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     let aliases = Aliases::load_hardcoded();
-    let app_state = AppState { aliases: aliases };
+    let mut all_calendars = HashMap::new();
+    for c in aliases.get_all_calendars_to_create() {
+        all_calendars.insert(c.clone(), CountryCalendar::try_from(c.as_str()).unwrap());
+    }
 
-    // TODO
-    // faire un calendrier par item dans un alias
-    // faire un merged calendar par aliases
-    // mettre ça dans une gigantesque hashmap
-    // passer la hashmap en state
+    let mut all_merged_calendars = HashMap::new();
+    for a in aliases.get_all_aliases() {
+        let mut m = MergedCalendar::new(a.clone().as_str());
+        if let Some(members) = aliases.get_members(&a) {
+            for c in members {
+                m.add(all_calendars.get(&c).unwrap())
+            }
+        }
+        all_merged_calendars.insert(a.clone(), m);
+    }
+
+    let app_state = AppState {
+        aliases: aliases,
+        all_merged_calendars: Arc::new(all_merged_calendars),
+    };
 
     // TODO faire un cache des calendriers en local
     //
