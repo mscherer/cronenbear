@@ -1,10 +1,11 @@
 <html>
 <body>
-hello
+Hello, welcome to the Cronenbear index page. here is the list of calendar you can use:
 <ul>
 {% for c in calendars %}
-<li>{{ c }}</li>
+<li><a href="/calendar/{{ c }}.ics">{{ c }}</li>
 {% endfor %}
 </ul>
+<footer><a href="https://github.com/mscherer/cronenbear">Source code</a></footer>
 </body>
 </html>
