@@ -10,11 +10,11 @@ pub struct Aliases {
 }
 
 impl Aliases {
-    pub fn load_from_file(path: &str) -> Self {
-        // later
-        todo!();
-    }
-
+    /*    pub fn load_from_file(path: &str) -> Self {
+            // later
+            todo!();
+        }
+    */
     pub fn load_hardcoded() -> Self {
         let aliases: Aliases = toml::from_str(include_str!("../data/aliases.toml")).unwrap();
         aliases

@@ -27,13 +27,14 @@ pub async fn ical_handler(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> impl IntoResponse {
-    if let Some(calendar_name) = id.strip_suffix(".ics") {
-        if let Some(merged) = state.all_merged_calendars.get(calendar_name) {
-            let mut headers = header::HeaderMap::new();
-            headers.insert(header::CONTENT_TYPE, "text/calendar".parse().unwrap());
-            return (headers, merged.generate_ical().to_string()).into_response();
-        }
+    if let Some(calendar_name) = id.strip_suffix(".ics")
+        && let Some(merged) = state.all_merged_calendars.get(calendar_name)
+    {
+        let mut headers = header::HeaderMap::new();
+        headers.insert(header::CONTENT_TYPE, "text/calendar".parse().unwrap());
+        return (headers, merged.generate_ical().to_string()).into_response();
     }
+
     (StatusCode::NOT_FOUND, "Not Found").into_response()
 }
 
@@ -73,7 +74,7 @@ async fn main() {
     }
 
     let app_state = AppState {
-        aliases: aliases,
+        aliases,
         all_merged_calendars: Arc::new(all_merged_calendars),
     };
 
@@ -81,7 +82,7 @@ async fn main() {
     //
     let port: u16 = match env::var("PORT") {
         Ok(val) => val.parse().unwrap_or_else(|_| {
-            println!("Incorrect PORT value: {}, using default: {}", val, PORT);
+            println!("Incorrect PORT value: {val}, using default: {PORT}");
             PORT
         }),
         Err(_) => PORT,
@@ -95,7 +96,7 @@ async fn main() {
         .route("/calendar/{id}", get(ical_handler))
         .with_state(app_state);
 
-    println!("Server started on port {}", port);
+    println!("Server started on port {port}");
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
         .unwrap();
