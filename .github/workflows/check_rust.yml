@@ -27,6 +27,11 @@ jobs:
           command: build
           args: --release
 
+      - name: Run cargo build
+        uses: clechasseur/rs-cargo@v3
+        with:
+          command: test
+
       - name: Run cargo fmt
         uses: clechasseur/rs-cargo@v3
         with:
