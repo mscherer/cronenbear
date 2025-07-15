@@ -27,7 +27,7 @@ impl MergedCalendar {
     }
 
     // TODO remove the unwrap
-    pub fn add<T: GooglePublicCalendar>(&mut self, calendar: T) {
+    pub fn add<T: GooglePublicCalendar>(&mut self, calendar: &T) {
         self.calendars.push(calendar.to_ical().unwrap())
     }
 
