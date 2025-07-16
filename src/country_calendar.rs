@@ -46,6 +46,10 @@ impl GooglePublicCalendar for CountryCalendar {
         };
         r.to_string()
     }
+
+    fn get_short_name(&self) -> String {
+        self.iso_3166_code.alpha_2_code().to_string()
+    }
 }
 
 impl CountryCalendar {
@@ -89,6 +93,7 @@ mod test {
     fn test_new() {
         let fr = CountryCalendar::try_from("fr");
         assert_eq!(fr.is_err(), false);
+        assert_eq!(fr.unwrap().get_short_name(), "FR");
 
         let fr_capital = CountryCalendar::try_from("FR");
         assert_eq!(fr_capital.is_err(), false);

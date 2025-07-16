@@ -29,6 +29,8 @@ pub trait GooglePublicCalendar {
     // type Error = GooglePublicCalendarError;
     fn get_google_id(&self) -> String;
 
+    fn get_short_name(&self) -> String;
+
     fn construct_calendar_url(&self) -> String {
         let id = self.get_google_id();
         // cannot use # directly, convert to %23
