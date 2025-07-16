@@ -8,8 +8,6 @@ pub struct IndexTemplate {
 
 impl IndexTemplate {
     pub fn new(calendars: Vec<String>) -> Self {
-        Self {
-            calendars: calendars.clone(),
-        }
+        Self { calendars }
     }
 }

@@ -43,8 +43,7 @@ pub async fn health_checker_handler() -> impl IntoResponse {
 }
 
 pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
-    let calendars = state.aliases.get_all_aliases();
-    let template = IndexTemplate::new(calendars);
+    let template = IndexTemplate::new(state.aliases.get_all_aliases());
     if let Ok(body) = template.render() {
         (StatusCode::OK, Html(body)).into_response()
     } else {
