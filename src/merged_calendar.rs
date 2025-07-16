@@ -62,3 +62,14 @@ impl From<MergedCalendar> for icalendar::Calendar {
         merged_calendar.generate_ical()
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_add() {
+        let m = MergedCalendar::new("test");
+        assert_eq!(m.get_name(), "test");
+    }
+}
