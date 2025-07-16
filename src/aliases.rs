@@ -1,8 +1,7 @@
 use std::collections::HashMap;
-extern crate serde_derive;
 extern crate toml;
 use array_tool::vec::Uniq;
-use serde_derive::Deserialize;
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Aliases {

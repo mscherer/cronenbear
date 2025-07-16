@@ -5,14 +5,11 @@ edition = "2024"
 
 [dependencies]
 codes-iso-3166 = { version = "*", default-features = false }
-ureq = { version = "*" }
-icalendar = { version = "*", features= ["parser"] }
-toml = { version = "*" }
-serde_derive = "1"
-serde = { version = "1", features = ["derive"] }
-axum = { version = "0.8", features = ['macros']}
-axum-macros = "0.5"
-tokio = { version = "1" }
-askama = "0.14.0"
-array_tool = "1.0.3"
-
+ureq = { version = "*", default-features = false, features = ["rustls"] }
+icalendar = { version = "*", features = ["parser"] }
+toml = { version = "*", default-features = false, features = ["parse", "serde"] }
+serde = { version = "*", features = ["derive"] }
+axum = { version = "*", default-features = false, features = ["http1", "tokio"] }
+tokio = { version = "*", default-features = false, features = ["macros", "rt", "net"] }
+askama = { version = "*", default-features = false, features = ["derive", "alloc"] }
+array_tool = { version = "*", default-features = false }
