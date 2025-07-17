@@ -1,3 +1,7 @@
-[aliases]
-ospo = ["fr", "jp", "us", "cz", "de", "fi", "ie", "us"]
-comminfra = ["fr", "jp", "us"]
+[ospo]
+name = "Open Source Program Office"
+calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "us"]
+
+[comminfra]
+name = "Community Infrastructure team"
+calendars = ["fr", "jp", "us"]
