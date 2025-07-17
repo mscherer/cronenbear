@@ -1,17 +1,40 @@
 use std::collections::HashMap;
+use std::fmt;
 extern crate toml;
 use array_tool::vec::Uniq;
 use serde::Deserialize;
 
+#[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
+pub struct AliasName(String);
+impl fmt::Display for AliasName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+#[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
+pub struct AliasID(String);
+impl fmt::Display for AliasID {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl From<&str> for AliasID {
+    fn from(s: &str) -> Self {
+        Self(s.to_string())
+    }
+}
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Alias {
-    name: String,
+    name: AliasName,
     calendars: Vec<String>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Aliases {
-    aliases: HashMap<String, Alias>,
+    aliases: HashMap<AliasID, Alias>,
 }
 
 impl Aliases {
@@ -22,7 +45,7 @@ impl Aliases {
     */
 
     fn load_string(string: &str) -> Self {
-        let aliases: HashMap<String, Alias> = toml::from_str(string).unwrap();
+        let aliases: HashMap<AliasID, Alias> = toml::from_str(string).unwrap();
         Aliases { aliases }
     }
 
@@ -30,22 +53,29 @@ impl Aliases {
         Self::load_string(include_str!("../data/aliases.toml"))
     }
 
-    pub fn get_all_aliases(&self) -> Vec<String> {
+    pub fn get_all_aliases(&self) -> Vec<AliasID> {
         self.aliases.clone().into_keys().collect()
+    }
+
+    pub fn get_all_aliases_named(&self) -> HashMap<AliasID, AliasName> {
+        let mut res: HashMap<AliasID, AliasName> = HashMap::new();
+        for (k, v) in self.aliases.iter() {
+            res.insert(k.clone(), v.name.clone());
+        }
+        res
     }
 
     pub fn get_all_calendars_to_create(&self) -> Vec<String> {
         self.aliases
             .clone()
             .into_values()
-            .map(|x| x.calendars)
-            .flatten()
+            .flat_map(|x| x.calendars)
             .collect::<Vec<_>>()
             .unique()
     }
 
     // TODO check arguments
-    pub fn get_members(&self, alias: &String) -> Option<Vec<String>> {
+    pub fn get_members(&self, alias: &AliasID) -> Option<Vec<String>> {
         self.aliases.get(alias).cloned().map(|x| x.calendars)
     }
     /* pub fn generate_hardcoded() -> Self {
@@ -82,7 +112,7 @@ mod test {
         let al = Aliases::load_string(s);
         let aliases = al.get_all_aliases();
         assert_eq!(aliases.len(), 2);
-        assert!(aliases.contains(&"benelux".to_string()));
-        assert!(aliases.contains(&"cee".to_string()));
+        assert!(aliases.contains(&AliasID("benelux".to_string())));
+        assert!(aliases.contains(&AliasID("cee".to_string())));
     }
 }
