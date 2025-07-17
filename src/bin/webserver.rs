@@ -8,6 +8,7 @@ use axum::http::header;
 use axum::response::Html;
 use axum::response::IntoResponse;
 use axum::routing::get;
+use cronenbear::aliases::AliasID;
 use cronenbear::aliases::Aliases;
 use cronenbear::country_calendar::CountryCalendar;
 use cronenbear::index_page::IndexTemplate;
@@ -20,7 +21,7 @@ use std::env;
 #[derive(Clone, Debug)]
 pub struct AppState {
     aliases: Aliases,
-    all_merged_calendars: Arc<HashMap<String, MergedCalendar>>,
+    all_merged_calendars: Arc<HashMap<AliasID, MergedCalendar>>,
 }
 
 pub async fn ical_handler(
@@ -28,7 +29,7 @@ pub async fn ical_handler(
     Path(id): Path<String>,
 ) -> impl IntoResponse {
     if let Some(calendar_name) = id.strip_suffix(".ics")
-        && let Some(merged) = state.all_merged_calendars.get(calendar_name)
+        && let Some(merged) = state.all_merged_calendars.get(&calendar_name.into())
     {
         let mut headers = header::HeaderMap::new();
         headers.insert(header::CONTENT_TYPE, "text/calendar".parse().unwrap());
@@ -43,7 +44,7 @@ pub async fn health_checker_handler() -> impl IntoResponse {
 }
 
 pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
-    let template = IndexTemplate::new(state.aliases.get_all_aliases());
+    let template = IndexTemplate::new(state.aliases.get_all_aliases_named());
     if let Ok(body) = template.render() {
         (StatusCode::OK, Html(body)).into_response()
     } else {
@@ -63,7 +64,7 @@ async fn main() {
 
     let mut all_merged_calendars = HashMap::new();
     for a in aliases.get_all_aliases() {
-        let mut m = MergedCalendar::new(a.clone().as_str());
+        let mut m = MergedCalendar::new("nom");
         if let Some(members) = aliases.get_members(&a) {
             for c in members {
                 m.add(all_calendars.get(&c).unwrap())

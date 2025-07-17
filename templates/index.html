@@ -2,9 +2,10 @@
 <body>
 Hello, welcome to the Cronenbear index page. here is the list of calendar you can use:
 <ul>
-{% for c in calendars %}
-<li><a href="/calendar/{{ c }}.ics">{{ c }}</li>
+{% for k in calendars.clone().into_keys() %}
+<li><a href="/calendar/{{ k }}.ics">{{ calendars.get(k).unwrap() }}</li>
 {% endfor %}
+
 </ul>
 <footer><a href="https://github.com/mscherer/cronenbear">Source code</a></footer>
 </body>
