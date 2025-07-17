@@ -1,3 +1,4 @@
+use crate::aliases::FormatString;
 use crate::google_public_calendar::GooglePublicCalendar;
 use icalendar::CalendarComponent::Event;
 use icalendar::Component;
@@ -17,7 +18,7 @@ impl MergedCalendar {
     }
 
     // TODO remove the unwrap
-    pub fn add<T: GooglePublicCalendar>(&mut self, calendar: &T) {
+    pub fn add<T: GooglePublicCalendar>(&mut self, calendar: &T, format: &Option<FormatString>) {
         for e in &calendar.to_ical().unwrap().components {
             if let Event(event) = e {
                 // TODO make sure this work if language is set to something else than english
@@ -26,11 +27,14 @@ impl MergedCalendar {
                     .is_none_or(|v| !v.contains("Observance"))
                 {
                     let mut e = event.clone();
-                    let s = format!(
-                        "{}: {}",
-                        calendar.get_short_name(),
-                        e.get_summary().unwrap_or("Public holiday")
-                    );
+                    let summary = String::from(e.get_summary().unwrap_or("Public holiday"));
+
+                    let s = if let Some(_f) = format {
+                        // TODO add some formating
+                        summary
+                    } else {
+                        format!("{}: {}", calendar.get_short_name(), summary)
+                    };
                     e.summary(s.as_str());
                     //println!("{}", calendar);
                     // TODO add a text to say which country is on holiday

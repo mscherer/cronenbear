@@ -67,7 +67,7 @@ async fn main() {
         let mut m = MergedCalendar::new("nom");
         if let Some(members) = aliases.get_members(&a) {
             for c in members {
-                m.add(all_calendars.get(&c).unwrap())
+                m.add(all_calendars.get(&c).unwrap(), &None)
             }
         }
         all_merged_calendars.insert(a.clone(), m);
