@@ -4,8 +4,14 @@ use array_tool::vec::Uniq;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
+pub struct Alias {
+    name: String,
+    calendars: Vec<String>,
+}
+
+#[derive(Debug, Deserialize, Clone)]
 pub struct Aliases {
-    aliases: HashMap<String, Vec<String>>,
+    aliases: HashMap<String, Alias>,
 }
 
 impl Aliases {
@@ -14,9 +20,14 @@ impl Aliases {
             todo!();
         }
     */
+
+    fn load_string(string: &str) -> Self {
+        let aliases: HashMap<String, Alias> = toml::from_str(string).unwrap();
+        Aliases { aliases }
+    }
+
     pub fn load_hardcoded() -> Self {
-        let aliases: Aliases = toml::from_str(include_str!("../data/aliases.toml")).unwrap();
-        aliases
+        Self::load_string(include_str!("../data/aliases.toml"))
     }
 
     pub fn get_all_aliases(&self) -> Vec<String> {
@@ -27,6 +38,7 @@ impl Aliases {
         self.aliases
             .clone()
             .into_values()
+            .map(|x| x.calendars)
             .flatten()
             .collect::<Vec<_>>()
             .unique()
@@ -34,7 +46,7 @@ impl Aliases {
 
     // TODO check arguments
     pub fn get_members(&self, alias: &String) -> Option<Vec<String>> {
-        self.aliases.get(alias).cloned()
+        self.aliases.get(alias).cloned().map(|x| x.calendars)
     }
     /* pub fn generate_hardcoded() -> Self {
         // TODO use a hardcoded toml file
@@ -51,4 +63,26 @@ impl Aliases {
         }
     }
     */
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_functions() {
+        let s = r#"[cee]
+            name='CEE'
+            calendars=['fr', 'be', 'it', 'lu', 'nl', 'de']
+
+            [benelux]
+            name='Benelux'
+            calendars=['be', 'lu', 'nl' ]"#;
+
+        let al = Aliases::load_string(s);
+        let aliases = al.get_all_aliases();
+        assert_eq!(aliases.len(), 2);
+        assert!(aliases.contains(&"benelux".to_string()));
+        assert!(aliases.contains(&"cee".to_string()));
+    }
 }
