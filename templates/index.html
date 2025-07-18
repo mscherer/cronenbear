@@ -9,6 +9,6 @@ Hello, welcome to the Cronenbear index page, a tool to merge multiple Google hol
 <li><a href="/calendar/{{ k }}.ics">{{ calendars.get(k).unwrap() }}</a></li>
 {% endfor %}
 </ul>
-<footer><a href="https://github.com/mscherer/cronenbear">Source code</a> - Compilation date: {{ date }} - Git revision: {{ git_rev }}</footer>
+<footer><a href="{{ env!("CARGO_PKG_REPOSITORY") }}">Source code</a> - Compilation date: {{ date }} - Git revision: {{ git_rev }}</footer>
 </body>
 </html>
