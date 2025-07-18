@@ -3,6 +3,7 @@ use std::fmt;
 extern crate toml;
 use array_tool::vec::Uniq;
 use serde::Deserialize;
+use std::str::Chars;
 
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
 pub struct AliasName(String);
@@ -29,6 +30,14 @@ impl From<&str> for AliasID {
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
 pub struct FormatString(String);
 
+impl FormatString {
+    pub fn new(format: impl Into<String>) -> Self {
+        Self(format.into())
+    }
+    pub fn chars(&self) -> Chars<'_> {
+        self.0.chars()
+    }
+}
 #[derive(Debug, Deserialize, Clone)]
 pub struct Alias {
     //    format: Option<FormatString>,
