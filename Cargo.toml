@@ -2,6 +2,8 @@
 name = "cronenbear"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+repository = "https://github.com/mscherer/cronenbear"
 
 [dependencies]
 codes-iso-3166 = { version = "*", default-features = false, features = ["full_name"] }
