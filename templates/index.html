@@ -5,7 +5,7 @@
 <body>
 Hello, welcome to the Cronenbear index page, a tool to merge multiple Google holidays calendars into 1 single ics file. Here is the list of calendars you can use:
 <ul>
-{% for k in calendars.clone().into_keys() %}
+{% for k in calendars.clone().into_keys().sorted() %}
 <li><a href="/calendar/{{ k }}.ics">{{ calendars.get(k).unwrap() }}</a></li>
 {% endfor %}
 </ul>

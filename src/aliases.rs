@@ -13,7 +13,7 @@ impl fmt::Display for AliasName {
     }
 }
 
-#[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
+#[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize, Ord, PartialOrd)]
 pub struct AliasID(String);
 impl fmt::Display for AliasID {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
