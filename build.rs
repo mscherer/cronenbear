@@ -18,7 +18,7 @@ fn main() {
         .output()
     {
         Ok(u) => String::from_utf8(u.stdout).unwrap(),
-        Err(_) => String::from("HEAD"),
+        Err(_) => env::var("GIT_REV").unwrap_or(String::from("HEAD")),
     };
 
     fs::write(
