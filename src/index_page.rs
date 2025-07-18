@@ -4,6 +4,7 @@ use crate::consts::{DATE, GIT_REV};
 use askama::Template;
 use itertools::Itertools;
 use std::collections::HashMap;
+use std::env;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -18,7 +19,8 @@ impl IndexTemplate {
         Self {
             calendars,
             date: String::from(DATE),
-            git_rev: String::from(GIT_REV),
+            git_rev: env::var("OPENSHIFT_BUILD_COMMIT").unwrap_or(String::from(GIT_REV))[0..6]
+                .to_string(),
         }
     }
 }
