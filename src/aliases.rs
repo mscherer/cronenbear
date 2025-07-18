@@ -40,7 +40,7 @@ impl FormatString {
 }
 #[derive(Debug, Deserialize, Clone)]
 pub struct Alias {
-    //    format: Option<FormatString>,
+    format: Option<FormatString>,
     name: AliasName,
     calendars: Vec<String>,
 }
@@ -90,6 +90,14 @@ impl Aliases {
     // TODO check arguments
     pub fn get_members(&self, alias: &AliasID) -> Option<Vec<String>> {
         self.aliases.get(alias).cloned().map(|x| x.calendars)
+    }
+
+    pub fn get_formatting(&self, alias: &AliasID) -> Option<FormatString> {
+        if let Some(cal) = self.aliases.get(alias).cloned() {
+            cal.format.clone()
+        } else {
+            None
+        }
     }
     /* pub fn generate_hardcoded() -> Self {
         // TODO use a hardcoded toml file

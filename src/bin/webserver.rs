@@ -56,6 +56,7 @@ const PORT: u16 = 1107;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
+    println!("Loading calendars");
     let aliases = Aliases::load_hardcoded();
     let mut all_calendars = HashMap::new();
     for c in aliases.get_all_calendars_to_create() {
@@ -64,10 +65,11 @@ async fn main() {
 
     let mut all_merged_calendars = HashMap::new();
     for a in aliases.get_all_aliases() {
+        let formating = aliases.get_formatting(&a);
         let mut m = MergedCalendar::new("nom");
         if let Some(members) = aliases.get_members(&a) {
             for c in members {
-                m.add(all_calendars.get(&c).unwrap(), &None)
+                m.add(all_calendars.get(&c).unwrap(), &formating)
             }
         }
         all_merged_calendars.insert(a.clone(), m);
