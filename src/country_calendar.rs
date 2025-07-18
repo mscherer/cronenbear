@@ -1,4 +1,6 @@
 use codes_iso_3166::part_1::CountryCode;
+use country_emoji::flag;
+use std::collections::HashMap;
 use std::fmt;
 use std::str::FromStr;
 
@@ -49,6 +51,19 @@ impl GooglePublicCalendar for CountryCalendar {
 
     fn get_short_name(&self) -> String {
         self.iso_3166_code.alpha_2_code().to_string()
+    }
+
+    fn get_formatting_hashmap(&self) -> HashMap<String, String> {
+        let mut res = HashMap::new();
+        let short_name = self.iso_3166_code.short_name();
+        if let Some(emoji) = flag(short_name) {
+            res.insert("emoji".to_owned(), emoji);
+        }
+        res.insert("name".to_owned(), String::from(short_name));
+
+        res.insert("iso_code".to_owned(), self.get_short_name());
+        // ("emoji".to_owned(), flag(self.iso_3166_code.full_name())),
+        res
     }
 }
 
@@ -104,5 +119,14 @@ mod test {
         // I hope no country will be created with that code
         let zz = CountryCalendar::try_from("ZZ");
         assert_eq!(zz.is_err(), true);
+    }
+
+    #[test]
+    fn test_get_formatting_hashmap() {
+        let fr = CountryCalendar::try_from("fr").unwrap();
+        let hm = fr.get_formatting_hashmap();
+        assert_eq!(hm.get("iso_code"), Some("FR".to_owned()).as_ref());
+        assert_eq!(hm.get("name"), Some("France".to_owned()).as_ref());
+        assert_eq!(hm.get("emoji"), Some("🇫🇷".to_owned()).as_ref());
     }
 }

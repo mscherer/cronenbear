@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-codes-iso-3166 = { version = "*", default-features = false }
+codes-iso-3166 = { version = "*", default-features = false, features = ["full_name"] }
 ureq = { version = "*", default-features = false, features = ["rustls"] }
 icalendar = { version = "*", features = ["parser"] }
 toml = { version = "*", default-features = false, features = ["parse", "serde"] }
@@ -13,3 +13,4 @@ axum = { version = "*", default-features = false, features = ["http1", "tokio"] 
 tokio = { version = "*", default-features = false, features = ["macros", "rt", "net"] }
 askama = { version = "*", default-features = false, features = ["derive", "alloc"] }
 array_tool = { version = "*", default-features = false }
+country-emoji = "0.2.0"

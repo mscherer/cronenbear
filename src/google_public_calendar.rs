@@ -1,4 +1,5 @@
 use icalendar::Calendar;
+use std::collections::HashMap;
 use ureq;
 
 const GCAL_PREFIX: &str = "https://calendar.google.com/calendar/ical/";
@@ -29,7 +30,13 @@ pub trait GooglePublicCalendar {
     // type Error = GooglePublicCalendarError;
     fn get_google_id(&self) -> String;
 
-    fn get_short_name(&self) -> String;
+    fn get_short_name(&self) -> String {
+        "".to_string()
+    }
+
+    fn get_formatting_hashmap(&self) -> HashMap<String, String> {
+        HashMap::new()
+    }
 
     fn construct_calendar_url(&self) -> String {
         let id = self.get_google_id();
