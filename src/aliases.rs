@@ -26,13 +26,12 @@ impl From<&str> for AliasID {
     }
 }
 
-
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
 pub struct FormatString(String);
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Alias {
-//    format: Option<FormatString>,
+    //    format: Option<FormatString>,
     name: AliasName,
     calendars: Vec<String>,
 }

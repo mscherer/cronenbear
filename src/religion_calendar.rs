@@ -34,10 +34,6 @@ impl GooglePublicCalendar for ReligionCalendar {
         };
         r.to_string()
     }
-
-    fn get_short_name(&self) -> String {
-        "".to_string()
-    }
 }
 
 impl TryFrom<ReligionCalendar> for Calendar {
