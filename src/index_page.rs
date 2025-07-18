@@ -2,6 +2,7 @@ use crate::aliases::AliasID;
 use crate::aliases::AliasName;
 use crate::consts::{DATE, GIT_REV};
 use askama::Template;
+use itertools::Itertools;
 use std::collections::HashMap;
 
 #[derive(Template)]
