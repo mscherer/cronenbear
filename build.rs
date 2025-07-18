@@ -29,6 +29,6 @@ fn main() {
         "
         ),
     )
-    .unwrap();
+    .unwrap_or_else(|_| println!("cargo::error=Cannot write const_build.rs"));
     println!("cargo::rerun-if-changed=build.rs");
 }
