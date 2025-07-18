@@ -3,12 +3,11 @@
 <title>Cronenbear - tool to merge Google public holidays calendars</title>
 </header>
 <body>
-Hello, welcome to the Cronenbear index page, a tool to merge Google holidays calendar into 1 single ic file. Here is the list of calendars you can use:
+Hello, welcome to the Cronenbear index page, a tool to merge multiple Google holidays calendars into 1 single ics file. Here is the list of calendars you can use:
 <ul>
 {% for k in calendars.clone().into_keys() %}
-<li><a href="/calendar/{{ k }}.ics">{{ calendars.get(k).unwrap() }}</li>
+<li><a href="/calendar/{{ k }}.ics">{{ calendars.get(k).unwrap() }}</a></li>
 {% endfor %}
-
 </ul>
 <footer><a href="https://github.com/mscherer/cronenbear">Source code</a></footer>
 </body>
