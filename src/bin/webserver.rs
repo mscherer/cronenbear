@@ -14,9 +14,10 @@ use cronenbear::country_calendar::CountryCalendar;
 use cronenbear::index_page::IndexTemplate;
 use cronenbear::merged_calendar::MergedCalendar;
 use std::collections::HashMap;
-use std::sync::Arc;
-
 use std::env;
+use std::sync::Arc;
+use tower_http::trace::{self, TraceLayer};
+use tracing::Level;
 
 #[derive(Clone, Debug)]
 pub struct AppState {
@@ -56,7 +57,12 @@ const PORT: u16 = 1107;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
-    println!("Loading calendars");
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .compact()
+        .init();
+
+    tracing::info!("Loading calendars");
     let aliases = Aliases::load_hardcoded();
     let mut all_calendars = HashMap::new();
     for c in aliases.get_all_calendars_to_create() {
@@ -85,21 +91,26 @@ async fn main() {
     //
     let port: u16 = match env::var("PORT") {
         Ok(val) => val.parse().unwrap_or_else(|_| {
-            println!("Incorrect PORT value: {val}, using default: {PORT}");
+            tracing::warn!("Incorrect PORT value: {val}, using default: {PORT}");
             PORT
         }),
         Err(_) => PORT,
     };
-
     let app = Router::new()
         .route("/healthz", get(health_checker_handler))
         .route("/", get(index_handler))
         // not supported until 0.9
         //.route("/calendar/{id}.ics", get(ical_handler));
         .route("/calendar/{id}", get(ical_handler))
+        .layer(
+            TraceLayer::new_for_http()
+                .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
+                .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
+        )
         .with_state(app_state);
 
-    println!("Server started on port {port}");
+    tracing::info!("Server started on port {port}");
+
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
         .unwrap();
