@@ -66,7 +66,8 @@ async fn main() {
     let mut all_merged_calendars = HashMap::new();
     for a in aliases.get_all_aliases() {
         let formating = aliases.get_formatting(&a);
-        let mut m = MergedCalendar::new("nom");
+        let name = String::from(aliases.get_name(&a).unwrap());
+        let mut m = MergedCalendar::new(&name);
         if let Some(members) = aliases.get_members(&a) {
             for c in members {
                 m.add(all_calendars.get(&c).unwrap(), &formating)
