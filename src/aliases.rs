@@ -27,6 +27,18 @@ impl From<&str> for AliasID {
     }
 }
 
+impl From<AliasID> for String {
+    fn from(s: AliasID) -> Self {
+        s.0.to_string()
+    }
+}
+
+impl From<AliasName> for String {
+    fn from(s: AliasName) -> Self {
+        s.0.to_string()
+    }
+}
+
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
 pub struct FormatString(String);
 
@@ -99,6 +111,15 @@ impl Aliases {
             None
         }
     }
+
+    pub fn get_name(&self, alias: &AliasID) -> Option<AliasName> {
+        if let Some(cal) = self.aliases.get(alias).cloned() {
+            Some(cal.name.clone())
+        } else {
+            None
+        }
+    }
+
     /* pub fn generate_hardcoded() -> Self {
         // TODO use a hardcoded toml file
         let hash = HashMap::from([("ospo".to_owned(), vec!["fr".to_owned(),
