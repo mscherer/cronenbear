@@ -97,7 +97,6 @@ async fn main() {
         Err(_) => PORT,
     };
     let app = Router::new()
-        .route("/healthz", get(health_checker_handler))
         .route("/", get(index_handler))
         // not supported until 0.9
         //.route("/calendar/{id}.ics", get(ical_handler));
@@ -110,6 +109,8 @@ async fn main() {
                 .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
                 .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
         )
+        // https://github.com/tokio-rs/axum/discussions/355
+        .route("/healthz", get(health_checker_handler))
         .with_state(app_state);
 
     tracing::info!("Server started on port {port}");
