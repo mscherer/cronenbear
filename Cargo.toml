@@ -17,3 +17,7 @@ askama = { version = "*", default-features = false, features = ["derive", "alloc
 array_tool = { version = "*", default-features = false }
 country-emoji = "0.2.0"
 itertools = "*"
+tracing = { version = "*", default-features = false }
+tracing-subscriber = { version = "*", default-features = false, features = ["fmt"] }
+tower-http = { version = "*", default-features = false, features = ["trace"] }
+
