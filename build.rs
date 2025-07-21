@@ -6,7 +6,11 @@ use std::process::Command;
 fn main() {
     let out_dir = env::var_os("OUT_DIR").unwrap();
     let dest_path = Path::new(&out_dir).join("const_build.rs");
-    let now = match Command::new("date").arg("-u").arg("+%Y-%m-%d").output() {
+    let now = match Command::new("date")
+        .arg("-u")
+        .arg("+%Y-%m-%d %H:%M:%S")
+        .output()
+    {
         Ok(n) => String::from_utf8(n.stdout).unwrap(),
         Err(_) => String::from("undefined"),
     };
@@ -24,7 +28,7 @@ fn main() {
     fs::write(
         &dest_path,
         format!(
-            "pub const DATE :&str = \"{now}\";
+            "pub const BUILDTIME :&str = \"{now}\";
          pub const GIT_REV :&str = \"{git}\";
         "
         ),
