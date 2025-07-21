@@ -4,10 +4,10 @@ use axum::extract::Path;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::http::header;
-
 use axum::response::Html;
 use axum::response::IntoResponse;
 use axum::routing::get;
+use axum_response_cache::CacheLayer;
 use cronenbear::aliases::AliasID;
 use cronenbear::aliases::Aliases;
 use cronenbear::country_calendar::CountryCalendar;
@@ -101,7 +101,10 @@ async fn main() {
         .route("/", get(index_handler))
         // not supported until 0.9
         //.route("/calendar/{id}.ics", get(ical_handler));
-        .route("/calendar/{id}", get(ical_handler))
+        .route(
+            "/calendar/{id}",
+            get(ical_handler).layer(CacheLayer::with_lifespan(24 * 60 * 60)),
+        )
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
