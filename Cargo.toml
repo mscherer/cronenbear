@@ -5,6 +5,10 @@ edition = "2024"
 license = "MIT"
 repository = "https://github.com/mscherer/cronenbear"
 
+[profile.release]
+strip = true
+lto = true
+
 [dependencies]
 codes-iso-3166 = { version = "*", default-features = false, features = ["full_name"] }
 ureq = { version = "*", default-features = false, features = ["rustls"] }
