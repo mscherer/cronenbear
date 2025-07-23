@@ -160,6 +160,21 @@ mod test {
 
     #[test]
     fn test_hardcoded() {
-        Aliases::load_hardcoded();
+        use crate::country_calendar::CountryCalendar;
+        use crate::google_public_calendar::GooglePublicCalendar;
+        // will fail if the hardcoded toml is incorrect
+        let aliases = Aliases::load_hardcoded();
+        for c in aliases.get_all_calendars_to_create() {
+            let code = c.as_str();
+            // will panic if the alias can't be created
+            let cal = CountryCalendar::try_from(code).expect(
+                format!("the country code '{code}' should be a valid iso country code").as_str(),
+            );
+            assert_ne!(
+                cal.get_google_id(),
+                "",
+                "country {code} is not matched by get_google_id function"
+            );
+        }
     }
 }
