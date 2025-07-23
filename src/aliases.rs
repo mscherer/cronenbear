@@ -157,4 +157,9 @@ mod test {
         assert!(aliases.contains(&AliasID("benelux".to_string())));
         assert!(aliases.contains(&AliasID("cee".to_string())));
     }
+
+    #[test]
+    fn test_hardcoded() {
+        Aliases::load_hardcoded();
+    }
 }
