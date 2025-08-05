@@ -16,6 +16,7 @@ use cronenbear::merged_calendar::MergedCalendar;
 use std::collections::HashMap;
 use std::env;
 use std::sync::Arc;
+use std::time::Duration;
 use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
@@ -102,7 +103,7 @@ async fn main() {
         //.route("/calendar/{id}.ics", get(ical_handler));
         .route(
             "/calendar/{id}",
-            get(ical_handler).layer(CacheLayer::with_lifespan(24 * 60 * 60)),
+            get(ical_handler).layer(CacheLayer::with_lifespan(Duration::from_secs(24 * 60 * 60))),
         )
         .layer(
             TraceLayer::new_for_http()
