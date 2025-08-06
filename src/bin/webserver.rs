@@ -20,6 +20,9 @@ use std::time::Duration;
 use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
+#[cfg(feature = "metrics")]
+use axum_prometheus::PrometheusMetricLayer;
+
 #[derive(Clone, Debug)]
 pub struct AppState {
     aliases: Aliases,
@@ -88,6 +91,9 @@ async fn main() {
         all_merged_calendars: Arc::new(all_merged_calendars),
     };
 
+    #[cfg(feature = "metrics")]
+    let (prometheus_layer, metric_handle) = PrometheusMetricLayer::pair();
+
     // TODO faire un cache des calendriers en local
     //
     let port: u16 = match env::var("PORT") {
@@ -113,6 +119,11 @@ async fn main() {
         // https://github.com/tokio-rs/axum/discussions/355
         .route("/healthz", get(health_checker_handler))
         .with_state(app_state);
+
+    #[cfg(feature = "metrics")]
+    let app = app
+        .route("/metrics", get(|| async move { metric_handle.render() }))
+        .layer(prometheus_layer);
 
     tracing::info!("Server started on port {port}");
 
