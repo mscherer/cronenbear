@@ -6,3 +6,8 @@ calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "gb"]
 format = "{flag}: {summary}"
 name = "Community Infrastructure team"
 calendars = ["fr", "jp", "us"]
+
+[religious]
+format = "{flag}: {summary}"
+name = "Major religious holidays"
+calendars = ["christian", "hinduism", "islamic", "judaism", "orthodox_christianity"]

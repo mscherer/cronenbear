@@ -13,6 +13,7 @@ use cronenbear::aliases::Aliases;
 use cronenbear::country_calendar::CountryCalendar;
 use cronenbear::index_page::IndexTemplate;
 use cronenbear::merged_calendar::MergedCalendar;
+use cronenbear::religion_calendar::ReligionCalendar;
 use std::collections::HashMap;
 use std::env;
 use std::sync::Arc;
@@ -59,6 +60,11 @@ pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
 
 const PORT: u16 = 1107;
 
+enum HolidaysCalendar {
+    Country(CountryCalendar),
+    Religion(ReligionCalendar),
+}
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     tracing_subscriber::fmt()
@@ -70,20 +76,30 @@ async fn main() {
     let aliases = Aliases::load_hardcoded();
     let mut all_calendars = HashMap::new();
     for c in aliases.get_all_calendars_to_create() {
-        all_calendars.insert(c.clone(), CountryCalendar::try_from(c.as_str()).unwrap());
+        if let Ok(cal) = CountryCalendar::try_from(c.as_str()) {
+            all_calendars.insert(c.clone(), HolidaysCalendar::Country(cal));
+        } else if let Ok(cal) = ReligionCalendar::try_from(c.as_str()) {
+            all_calendars.insert(c.clone(), HolidaysCalendar::Religion(cal));
+        } else {
+            panic!("Can't load calendar {c}");
+        }
     }
 
     let mut all_merged_calendars = HashMap::new();
     for a in aliases.get_all_aliases() {
         let formating = aliases.get_formatting(&a);
         let name = String::from(aliases.get_name(&a).unwrap());
-        let mut m = MergedCalendar::new(&name);
+        let mut merged_calendar = MergedCalendar::new(&name);
         if let Some(members) = aliases.get_members(&a) {
-            for c in members {
-                m.add(all_calendars.get(&c).unwrap(), &formating)
+            for m in members {
+                if let HolidaysCalendar::Country(c) = all_calendars.get(&m).unwrap() {
+                    merged_calendar.add(c, &formating)
+                } else if let HolidaysCalendar::Religion(c) = all_calendars.get(&m).unwrap() {
+                    merged_calendar.add(c, &formating)
+                };
             }
         }
-        all_merged_calendars.insert(a.clone(), m);
+        all_merged_calendars.insert(a.clone(), merged_calendar);
     }
 
     let app_state = AppState {
