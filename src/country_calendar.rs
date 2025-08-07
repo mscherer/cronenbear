@@ -57,7 +57,7 @@ impl GooglePublicCalendar for CountryCalendar {
         let mut res = HashMap::new();
         let short_name = self.iso_3166_code.short_name();
         if let Some(emoji) = flag(short_name) {
-            res.insert("flag".to_owned(), emoji);
+            res.insert("emoji".to_owned(), emoji);
         }
         res.insert("name".to_owned(), String::from(short_name));
 
@@ -127,6 +127,6 @@ mod test {
         let hm = fr.get_formatting_hashmap();
         assert_eq!(hm.get("iso_code"), Some("FR".to_owned()).as_ref());
         assert_eq!(hm.get("name"), Some("France".to_owned()).as_ref());
-        assert_eq!(hm.get("flag"), Some("🇫🇷".to_owned()).as_ref());
+        assert_eq!(hm.get("emoji"), Some("🇫🇷".to_owned()).as_ref());
     }
 }

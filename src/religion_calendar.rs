@@ -59,7 +59,7 @@ impl GooglePublicCalendar for ReligionCalendar {
             ReligionCode::OrthodoxChristianism => "☦️",
             ReligionCode::Hinduism => "🕉️",
         };
-        res.insert("flag".to_owned(), emoji.to_owned());
+        res.insert("emoji".to_owned(), emoji.to_owned());
         res
     }
 }

@@ -3,11 +3,11 @@ name = "Open Source Program Office"
 calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "gb"]
 
 [comminfra]
-format = "{flag}: {summary}"
+format = "{emoji}: {summary}"
 name = "Community Infrastructure team"
 calendars = ["fr", "jp", "us"]
 
 [religious]
-format = "{flag}: {summary}"
+format = "{emoji}: {summary}"
 name = "Major religious holidays"
 calendars = ["christian", "hinduism", "islamic", "judaism", "orthodox_christianity"]
