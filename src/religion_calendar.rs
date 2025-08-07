@@ -1,6 +1,7 @@
 use crate::double_lookup_table::DoubleLookupTables;
 use crate::google_public_calendar::{GooglePublicCalendar, GooglePublicCalendarError};
 use icalendar::Calendar;
+use std::collections::HashMap;
 use std::sync::LazyLock;
 
 // the only one that appear in the interface as far as I see
@@ -47,6 +48,19 @@ impl GooglePublicCalendar for ReligionCalendar {
             .get_by_key(&self.religion_code)
             .expect("all religions are here")
             .to_string()
+    }
+
+    fn get_formatting_hashmap(&self) -> HashMap<String, String> {
+        let mut res = HashMap::new();
+        let emoji = match self.religion_code {
+            ReligionCode::Christianism => "✝️",
+            ReligionCode::Judaism => "✡️",
+            ReligionCode::Islamic => "☪️",
+            ReligionCode::OrthodoxChristianism => "☦️",
+            ReligionCode::Hinduism => "🕉️",
+        };
+        res.insert("flag".to_owned(), emoji.to_owned());
+        res
     }
 }
 
