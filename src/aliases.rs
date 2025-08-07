@@ -162,19 +162,27 @@ mod test {
     fn test_hardcoded() {
         use crate::country_calendar::CountryCalendar;
         use crate::google_public_calendar::GooglePublicCalendar;
+        use crate::religion_calendar::ReligionCalendar;
         // will fail if the hardcoded toml is incorrect
         let aliases = Aliases::load_hardcoded();
         for c in aliases.get_all_calendars_to_create() {
             let code = c.as_str();
             // will panic if the alias can't be created
-            let cal = CountryCalendar::try_from(code).expect(
-                format!("the country code '{code}' should be a valid iso country code").as_str(),
-            );
-            assert_ne!(
-                cal.get_google_id(),
-                "",
-                "country {code} is not matched by get_google_id function"
-            );
+            if let Ok(cal) = CountryCalendar::try_from(code) {
+                assert_ne!(
+                    cal.get_google_id(),
+                    "",
+                    "country {code} is not matched by get_google_id function"
+                );
+            } else if let Ok(cal) = ReligionCalendar::try_from(code) {
+                assert_ne!(
+                    cal.get_google_id(),
+                    "",
+                    "religion {code} is not matched by get_google_id function"
+                );
+            } else {
+                panic!("{}", format!("the country code '{code}' should be a valid iso country code or a religion code").as_str());
+            }
         }
     }
 }
