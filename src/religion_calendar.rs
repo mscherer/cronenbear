@@ -1,8 +1,10 @@
+use crate::double_lookup_table::DoubleLookupTables;
 use crate::google_public_calendar::{GooglePublicCalendar, GooglePublicCalendarError};
 use icalendar::Calendar;
+use std::sync::LazyLock;
 
 // the only one that appear in the interface as far as I see
-#[derive(Debug)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
 pub enum ReligionCode {
     Christianism,
     Judaism,
@@ -10,6 +12,22 @@ pub enum ReligionCode {
     OrthodoxChristianism,
     Hinduism,
 }
+
+type ReligionDLT = DoubleLookupTables<ReligionCode, String>;
+pub fn generate_religion_dlt() -> ReligionDLT {
+    let mut r = ReligionDLT::new();
+    r.insert(ReligionCode::Christianism, "christian".to_owned());
+    r.insert(ReligionCode::Hinduism, "hinduism".to_owned());
+    r.insert(ReligionCode::Islamic, "islamic".to_owned());
+    r.insert(ReligionCode::Judaism, "judaism".to_owned());
+    r.insert(
+        ReligionCode::OrthodoxChristianism,
+        "orthodox_christianity".to_owned(),
+    );
+    r
+}
+
+static RELIGION_TABLE: LazyLock<ReligionDLT> = LazyLock::new(generate_religion_dlt);
 
 #[derive(Debug)]
 pub struct ReligionCalendar {
@@ -25,14 +43,23 @@ impl ReligionCalendar {
 }
 impl GooglePublicCalendar for ReligionCalendar {
     fn get_google_id(&self) -> String {
-        let r = match self.religion_code {
-            ReligionCode::Christianism => "christian",
-            ReligionCode::Hinduism => "hinduism",
-            ReligionCode::Islamic => "islamic",
-            ReligionCode::Judaism => "judaism",
-            ReligionCode::OrthodoxChristianism => "orthodox_christianity",
-        };
-        r.to_string()
+        RELIGION_TABLE
+            .get_by_key(&self.religion_code)
+            .expect("all religions are here")
+            .to_string()
+    }
+}
+
+impl TryFrom<&str> for ReligionCalendar {
+    type Error = ();
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        let code = value.to_string().to_lowercase();
+
+        if let Some(v) = RELIGION_TABLE.get_by_value(&code) {
+            Ok(ReligionCalendar::new(*v))
+        } else {
+            Err(())
+        }
     }
 }
 
