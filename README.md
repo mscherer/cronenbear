@@ -22,7 +22,7 @@ with TLS.
 
 You need to restart it from time to time to refresh the calendars from Google.
 
-A Dockefile is provided to let everything be built on Openshift.
+A Dockerfile is provided to let everything be built on Openshift.
 
 # Adding a new alias
 
@@ -35,10 +35,15 @@ As Google somehow decided to not use iso 3166 code for naming the calendars, the
 use a manually built lookup table. I added a few countries before I got bored, so
 if a country is missing, the `get_google_id` function in `src/country_calendar.rs` need to be completed.
 
+# Adding a new religion
+
+If Google decide to add a new religious calendar, it need to be added in `src/religion_calendar.rs`, and
+a corresponding emoji is likely needed in the same file.
+
 # Missing features
-* Religious holidays are not yet supported (code is almost here)
 * The documentation on the index page is sparse
 * The design could be improved (see `templates/index.html`)
 * Startup is slow as every calendar is fetched one by one
 * There is no resilience against Google Calendar bugs, some caching should be added
 * There is no refresh coded in the server except restarting, which is automatic on Openshift
+* There should be a config file and not use a hardcoded toml file.
