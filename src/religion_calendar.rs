@@ -1,5 +1,5 @@
-use crate::double_lookup_table::DoubleLookupTables;
 use crate::google_public_calendar::{GooglePublicCalendar, GooglePublicCalendarError};
+use bimap::BiMap;
 use icalendar::Calendar;
 use std::collections::HashMap;
 use std::sync::LazyLock;
@@ -14,7 +14,7 @@ pub enum ReligionCode {
     Hinduism,
 }
 
-type ReligionDLT = DoubleLookupTables<ReligionCode, String>;
+type ReligionDLT = BiMap<ReligionCode, String>;
 pub fn generate_religion_dlt() -> ReligionDLT {
     let mut r = ReligionDLT::new();
     r.insert(ReligionCode::Christianism, "christian".to_owned());
@@ -45,7 +45,7 @@ impl ReligionCalendar {
 impl GooglePublicCalendar for ReligionCalendar {
     fn get_google_id(&self) -> String {
         RELIGION_TABLE
-            .get_by_key(&self.religion_code)
+            .get_by_left(&self.religion_code)
             .expect("all religions are here")
             .to_string()
     }
@@ -69,7 +69,7 @@ impl TryFrom<&str> for ReligionCalendar {
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let code = value.to_string().to_lowercase();
 
-        if let Some(v) = RELIGION_TABLE.get_by_value(&code) {
+        if let Some(v) = RELIGION_TABLE.get_by_right(&code) {
             Ok(ReligionCalendar::new(*v))
         } else {
             Err(())
