@@ -3,6 +3,7 @@ name = "Open Source Program Office"
 calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "gb"]
 
 [comminfra]
+hidden = true
 format = "{emoji}: {summary}"
 name = "Community Infrastructure team"
 calendars = ["fr", "jp", "us"]

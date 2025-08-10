@@ -50,11 +50,16 @@ impl FormatString {
         self.0.chars()
     }
 }
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Alias {
     format: Option<FormatString>,
     name: AliasName,
     calendars: Vec<String>,
+    // default to false, by sheer luck
+    // see https://github.com/serde-rs/serde/issues/368 for future fix
+    #[serde(default)]
+    hidden: bool,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -82,10 +87,12 @@ impl Aliases {
         self.aliases.clone().into_keys().collect()
     }
 
-    pub fn get_all_aliases_named(&self) -> HashMap<AliasID, AliasName> {
+    pub fn get_public_aliases_index(&self) -> HashMap<AliasID, AliasName> {
         let mut res: HashMap<AliasID, AliasName> = HashMap::new();
         for (k, v) in self.aliases.iter() {
-            res.insert(k.clone(), v.name.clone());
+            if !v.hidden {
+                res.insert(k.clone(), v.name.clone());
+            }
         }
         res
     }

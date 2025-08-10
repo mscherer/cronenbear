@@ -47,4 +47,4 @@ a corresponding emoji is likely needed in the same file.
 * There is no resilience against Google Calendar bugs, some caching should be added
 * There is no refresh coded in the server except restarting, which is automatic on Openshift
 * There should be a config file and not use a hardcoded toml file. Or even better, a configuration directory.
-* There should be a way to have "private" calendar with a setting (requires separate config file), calendar that do not appear on index and can't be guessed easily.
+* The hidden calendar should be hidden behind some sha256 or md5 url.

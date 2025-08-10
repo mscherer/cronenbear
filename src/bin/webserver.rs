@@ -50,7 +50,7 @@ pub async fn health_checker_handler() -> impl IntoResponse {
 }
 
 pub async fn index_handler(State(state): State<AppState>) -> impl IntoResponse {
-    let template = IndexTemplate::new(state.aliases.get_all_aliases_named());
+    let template = IndexTemplate::new(state.aliases.get_public_aliases_index());
     if let Ok(body) = template.render() {
         (StatusCode::OK, Html(body)).into_response()
     } else {
