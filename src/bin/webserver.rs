@@ -101,7 +101,10 @@ async fn main() {
         }
         all_merged_calendars.insert(a.clone(), merged_calendar);
     }
+    webserver(aliases, all_merged_calendars).await
+}
 
+async fn webserver(aliases: Aliases, all_merged_calendars: HashMap<AliasID, MergedCalendar>) {
     let app_state = AppState {
         aliases,
         all_merged_calendars: Arc::new(all_merged_calendars),
