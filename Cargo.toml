@@ -9,6 +9,9 @@ repository = "https://github.com/mscherer/cronenbear"
 strip = true
 lto = true
 
+[dev-dependencies]
+tempfile = { version = "*"}
+
 [dependencies]
 codes-iso-3166 = { version = "*", default-features = false, features = ["full_name"] }
 ureq = { version = "*", default-features = false, features = ["rustls"] }

@@ -3,6 +3,9 @@ use std::fmt;
 extern crate toml;
 use array_tool::vec::Uniq;
 use serde::Deserialize;
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
 use std::str::Chars;
 
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Deserialize)]
@@ -68,11 +71,12 @@ pub struct Aliases {
 }
 
 impl Aliases {
-    /*    pub fn load_from_file(path: &str) -> Self {
-            // later
-            todo!();
-        }
-    */
+    pub fn load_from_file(path: &Path) -> Result<Self, std::io::Error> {
+        let mut file = File::open(path)?;
+        let mut data = String::new();
+        file.read_to_string(&mut data)?;
+        Ok(Self::load_string(data.as_str()))
+    }
 
     fn load_string(string: &str) -> Self {
         let aliases: HashMap<AliasID, Alias> = toml::from_str(string).unwrap();
@@ -191,5 +195,32 @@ mod test {
                 panic!("{}", format!("the country code '{code}' should be a valid iso country code or a religion code").as_str());
             }
         }
+    }
+
+    #[test]
+    fn test_load_from_file() {
+        use tempfile::tempdir;
+        let dir = tempdir().expect("test shouldn't fail");
+
+        let test_file_path = dir.path().join("config.toml");
+        let test_file_not_exist_path = dir.path().join("notexist.toml");
+
+        let mut file = File::create(&test_file_path).expect("should run fine for test");
+        let s = r#"[frenchies]
+            name='French speakers'
+            calendars=['fr', 'be', 'ca', 'lu']
+        "#;
+
+        writeln!(file, "{}", s).expect("is running for test");
+
+        let aliases_res = Aliases::load_from_file(&test_file_not_exist_path);
+        assert!(aliases_res.is_err());
+
+        let aliases_res = Aliases::load_from_file(&test_file_path);
+        assert!(aliases_res.is_ok());
+        let Ok(al) = aliases_res else { todo!() };
+        let aliases = al.get_all_aliases();
+        assert_eq!(aliases.len(), 1);
+        assert!(aliases.contains(&AliasID("frenchies".to_string())));
     }
 }
