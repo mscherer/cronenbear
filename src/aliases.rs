@@ -5,6 +5,7 @@ use array_tool::vec::Uniq;
 use serde::Deserialize;
 use std::fs::File;
 use std::io::Read;
+use std::io::Write;
 use std::path::Path;
 use std::str::Chars;
 
