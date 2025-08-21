@@ -28,6 +28,7 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::BE => "be",
             CountryCode::BR => "brazilian",
             CountryCode::CA => "canadian",
+            CountryCode::CL => "cl",
             CountryCode::CN => "china",
             CountryCode::CZ => "czech",
             CountryCode::DE => "german",
@@ -36,6 +37,7 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::FR => "french",
             CountryCode::GB => "uk",
             CountryCode::GH => "gh",
+            CountryCode::GT => "gt",
             CountryCode::HR => "croatian",
             CountryCode::IE => "irish",
             // as surprising it may seems, that's what Google calendar use
