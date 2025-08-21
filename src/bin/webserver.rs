@@ -72,8 +72,17 @@ async fn main() {
         .compact()
         .init();
 
-    tracing::info!("Loading calendars");
-    let aliases = Aliases::load_hardcoded();
+    let aliases = match env::var("CONFIG") {
+        // TODO remove the unwrap later
+        Ok(path) => {
+            tracing::info!("Loading calendars from {}", path);
+            Aliases::load_from_file(std::path::Path::new(&path)).unwrap()
+        }
+        Err(_) => {
+            tracing::info!("Loading calendars from the binary");
+            Aliases::load_hardcoded()
+        }
+    };
     let mut all_calendars = HashMap::new();
     for c in aliases.get_all_calendars_to_create() {
         if let Ok(cal) = CountryCalendar::try_from(c.as_str()) {
