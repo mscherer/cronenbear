@@ -28,6 +28,8 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::BE => "be",
             CountryCode::BR => "brazilian",
             CountryCode::CA => "canadian",
+            CountryCode::CD => "cd",
+            CountryCode::CG => "cg", 
             CountryCode::CL => "cl",
             CountryCode::CN => "china",
             CountryCode::CZ => "czech",
@@ -42,6 +44,7 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::IE => "irish",
             // as surprising it may seems, that's what Google calendar use
             CountryCode::IL => "jewish",
+            CountryCode::IM => "im",
             // not sure why this is different
             CountryCode::IN => "indian.official",
             CountryCode::IT => "italian",
@@ -50,11 +53,16 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::KP => "kp",
             CountryCode::KR => "south_korea",
             CountryCode::LB => "lb",
+            CountryCode::MA => "ma",
+            CountryCode::ML => "ml",
+            CountryCode::MU => "mu",
+            CountryCode::MX => "mexican",
             CountryCode::NL => "dutch",
             CountryCode::PT => "portuguese",
             CountryCode::SA => "sa",
             CountryCode::SK => "slovak",
             CountryCode::US => "usa",
+            CountryCode::WF => "wf",
             _ => "",
         };
         r.to_string()
