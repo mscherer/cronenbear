@@ -23,17 +23,22 @@ pub struct CountryCalendar {
 impl GooglePublicCalendar for CountryCalendar {
     fn get_google_id(&self) -> String {
         let r = match self.iso_3166_code {
+            CountryCode::AT => "austrian",
             CountryCode::AU => "australian",
+            CountryCode::BG => "bulgarian",
             CountryCode::BR => "brazilian",
             CountryCode::CA => "canadian",
             CountryCode::CN => "china",
             CountryCode::CZ => "czech",
             CountryCode::DE => "german",
             CountryCode::DK => "danish",
+            CountryCode::ES => "spain",
             CountryCode::FI => "finnish",
             CountryCode::FR => "french",
             CountryCode::GB => "uk",
+            CountryCode::GR => "greek",
             CountryCode::HR => "croatian",
+            CountryCode::HU => "hungarian",
             CountryCode::IE => "irish",
             // as surprising it may seems, that's what Google calendar use
             CountryCode::IL => "jewish",
@@ -44,7 +49,13 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::KR => "south_korea",
             CountryCode::MX => "mexican",
             CountryCode::NL => "dutch",
+            CountryCode::NZ => "new_zealand",
+            CountryCode::NO => "norwegian"
             CountryCode::PT => "portuguese",
+            CountryCode::PL => "polish",
+            CountryCode::RO => "romanian",
+            CountryCode::RU => "russian",
+            CountryCode::SE => "swedish",
             CountryCode::SK => "slovak",
             CountryCode::US => "usa",
             _ => self.iso_3166_code.alpha_2_code(),
