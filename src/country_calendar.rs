@@ -50,7 +50,7 @@ impl GooglePublicCalendar for CountryCalendar {
             CountryCode::MX => "mexican",
             CountryCode::NL => "dutch",
             CountryCode::NZ => "new_zealand",
-            CountryCode::NO => "norwegian"
+            CountryCode::NO => "norwegian",
             CountryCode::PT => "portuguese",
             CountryCode::PL => "polish",
             CountryCode::RO => "romanian",
