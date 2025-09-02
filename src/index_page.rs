@@ -19,8 +19,7 @@ impl IndexTemplate {
         Self {
             calendars,
             buildtime: String::from(BUILDTIME),
-            git_rev: format!("{:.8}", String::from(GIT_REV))
-                .to_string(),
+            git_rev: format!("{:.8}", String::from(GIT_REV)).to_string(),
         }
     }
 }
