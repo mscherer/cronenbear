@@ -21,8 +21,8 @@ fn main() {
         .arg("HEAD")
         .output()
     {
-        Ok(u) => String::from_utf8(u.stdout).unwrap(),
-        Err(_) => env::var("GIT_REV")
+        Ok(u) if u.status.success() => String::from_utf8(u.stdout).unwrap(),
+        Ok(_) | Err(_) => env::var("GIT_REV")
             .unwrap_or(env::var("OPENSHIFT_BUILD_COMMIT").unwrap_or(String::from("HEAD"))),
     };
 
