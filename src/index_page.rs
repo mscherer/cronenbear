@@ -19,8 +19,7 @@ impl IndexTemplate {
         Self {
             calendars,
             buildtime: String::from(BUILDTIME),
-            git_rev: env::var("OPENSHIFT_BUILD_COMMIT")
-                .unwrap_or(format!("{:.8}", String::from(GIT_REV)))
+            git_rev: format!("{:.8}", String::from(GIT_REV))
                 .to_string(),
         }
     }

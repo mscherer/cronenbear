@@ -22,7 +22,7 @@ fn main() {
         .output()
     {
         Ok(u) => String::from_utf8(u.stdout).unwrap(),
-        Err(_) => env::var("GIT_REV").unwrap_or(String::from("HEAD")),
+        Err(_) => env::var("GIT_REV").unwrap_or(env::var("OPENSHIFT_BUILD_COMMIT").unwrap_or(String::from("HEAD"))),
     };
 
     fs::write(
