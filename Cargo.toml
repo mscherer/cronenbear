@@ -22,14 +22,14 @@ axum = { version = "*", default-features = false, features = ["http1", "tokio"] 
 tokio = { version = "*", default-features = false, features = ["macros", "rt", "net"] }
 askama = { version = "*", default-features = false, features = ["derive", "alloc"] }
 array_tool = { version = "*", default-features = false }
-country-emoji = "0.3.0"
+country-emoji = "*"
 itertools = "*"
 tracing = { version = "*", default-features = false }
 tracing-subscriber = { version = "*", default-features = false, features = ["fmt"] }
 tower-http = { version = "*", default-features = false, features = ["trace"] }
 axum-response-cache = { version = "*", default-features = false, features= ["axum08"] }
 axum-prometheus = { version = "*", default-features = false, optional = true, features = ["prometheus"] }
-bimap = { version = "0.6.3", default-features = false, features = ["std"] }
+bimap = { version = "*", default-features = false, features = ["std"] }
 
 [features]
 metrics = ["dep:axum-prometheus"]
