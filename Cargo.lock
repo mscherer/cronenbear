@@ -365,9 +365,9 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
 name = "country-emoji"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9033f056ab6806a9406f405e7babb0c7c31e753495b81c64b8c3e9390cb16677"
+checksum = "88f41dcf7008e5669247a47e0e704390241718e347fecfd2e6865ede17a3e798"
 dependencies = [
  "once_cell",
  "regex",
