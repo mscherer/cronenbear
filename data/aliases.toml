@@ -1,6 +1,6 @@
 [ospo]
 name = "Open Source Program Office"
-calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "gb"]
+calendars = ["fr", "jp", "us", "cz", "de", "fi", "ie", "gb", "se"]
 
 [comminfra]
 hidden = true
