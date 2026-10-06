@@ -64,9 +64,9 @@ impl GooglePublicCalendar for ReligionCalendar {
     }
 }
 
-impl TryFrom<&str> for ReligionCalendar {
-    type Error = ();
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+impl core::str::FromStr for ReligionCalendar {
+    type Err = ();
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
         let code = value.to_string().to_lowercase();
 
         if let Some(v) = RELIGION_TABLE.get_by_right(&code) {

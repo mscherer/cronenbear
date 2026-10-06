@@ -179,13 +179,13 @@ mod test {
         for c in aliases.get_all_calendars_to_create() {
             let code = c.as_str();
             // will panic if the alias can't be created
-            if let Ok(cal) = CountryCalendar::try_from(code) {
+            if let Ok(cal) = code.parse::<CountryCalendar>() {
                 assert_ne!(
                     cal.get_google_id(),
                     "",
                     "country {code} is not matched by get_google_id function"
                 );
-            } else if let Ok(cal) = ReligionCalendar::try_from(code) {
+            } else if let Ok(cal) = code.parse::<ReligionCalendar>() {
                 assert_ne!(
                     cal.get_google_id(),
                     "",
