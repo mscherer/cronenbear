@@ -2,7 +2,6 @@ use codes_iso_3166::part_1::CountryCode;
 use country_emoji::flag;
 use std::collections::HashMap;
 use std::fmt;
-use std::str::FromStr;
 
 use crate::google_public_calendar::{GooglePublicCalendar, GooglePublicCalendarError};
 use icalendar::Calendar;
@@ -95,9 +94,9 @@ impl fmt::Display for CountryCalendar {
     }
 }
 
-impl TryFrom<&str> for CountryCalendar {
-    type Error = ();
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+impl core::str::FromStr for CountryCalendar {
+    type Err = ();
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
         let code = value.to_string().to_uppercase();
         if let Ok(v) = CountryCode::from_str(code.as_str()) {
             Ok(CountryCalendar::new(v))
@@ -120,24 +119,24 @@ mod test {
 
     #[test]
     fn test_new() {
-        let fr = CountryCalendar::try_from("fr");
+        let fr = "fr".parse::<CountryCalendar>();
         assert_eq!(fr.is_err(), false);
         assert_eq!(fr.unwrap().get_short_name(), "FR");
 
-        let fr_capital = CountryCalendar::try_from("FR");
+        let fr_capital = "FR".parse::<CountryCalendar>();
         assert_eq!(fr_capital.is_err(), false);
 
-        let plop = CountryCalendar::try_from("plop");
+        let plop = "plop".parse::<CountryCalendar>();
         assert_eq!(plop.is_err(), true);
 
         // I hope no country will be created with that code
-        let zz = CountryCalendar::try_from("ZZ");
+        let zz = "zz".parse::<CountryCalendar>();
         assert_eq!(zz.is_err(), true);
     }
 
     #[test]
     fn test_get_formatting_hashmap() {
-        let fr = CountryCalendar::try_from("fr").unwrap();
+        let fr = "fr".parse::<CountryCalendar>().unwrap();
         let hm = fr.get_formatting_hashmap();
         assert_eq!(hm.get("iso_code"), Some("FR".to_owned()).as_ref());
         assert_eq!(hm.get("name"), Some("France".to_owned()).as_ref());
@@ -146,9 +145,9 @@ mod test {
 
     #[test]
     fn test_get_calendar_from_iso() {
-        let fr = CountryCalendar::try_from("fr").unwrap();
+        let fr = "fr".parse::<CountryCalendar>().unwrap();
         assert_eq!(fr.get_google_id(), "french".to_owned());
-        let ma = CountryCalendar::try_from("ma").unwrap();
+        let ma = "ma".parse::<CountryCalendar>().unwrap();
         assert_eq!(ma.get_google_id(), "ma".to_owned());
     }
 }

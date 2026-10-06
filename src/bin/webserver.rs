@@ -85,9 +85,9 @@ async fn main() {
     };
     let mut all_calendars = HashMap::new();
     for c in aliases.get_all_calendars_to_create() {
-        if let Ok(cal) = CountryCalendar::try_from(c.as_str()) {
+        if let Ok(cal) = c.as_str().parse::<CountryCalendar>() {
             all_calendars.insert(c.clone(), HolidaysCalendar::Country(cal));
-        } else if let Ok(cal) = ReligionCalendar::try_from(c.as_str()) {
+        } else if let Ok(cal) = c.as_str().parse::<ReligionCalendar>() {
             all_calendars.insert(c.clone(), HolidaysCalendar::Religion(cal));
         } else {
             panic!("Can't load calendar {c}");
